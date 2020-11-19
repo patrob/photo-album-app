@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Text.Json;
 using PhotoAlbum.Service;
+using PhotoAlbum.Service.Models;
 
 namespace PhotoAlbum.ConsoleApp
 {
@@ -19,7 +21,8 @@ namespace PhotoAlbum.ConsoleApp
             }
 
 
-            using var getPhotosService = new HttpGetService("https://jsonplaceholder.typicode.com/photos");
+            var jsonSerializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            using var getPhotosService = new HttpGetService<Photo>("https://jsonplaceholder.typicode.com/photos", jsonSerializerOptions);
             var photoAlbumService = new PhotoAlbumService(getPhotosService);
 
             var photos = photoAlbumService.GetPhotosByAlbumId(validationResult.Result);

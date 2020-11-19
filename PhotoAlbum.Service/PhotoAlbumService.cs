@@ -7,9 +7,9 @@ namespace PhotoAlbum.Service
 {
     public class PhotoAlbumService : IPhotoAlbumService
     {
-        private IGetService getPhotosService;
+        private IGetService<Photo> getPhotosService;
 
-        public PhotoAlbumService(IGetService getPhotosServiceParam)
+        public PhotoAlbumService(IGetService<Photo> getPhotosServiceParam)
         {
             getPhotosService = getPhotosServiceParam;
         }
@@ -21,8 +21,7 @@ namespace PhotoAlbum.Service
                 throw new ArgumentException("Invalid Album Id.", nameof(albumId));
             }
 
-            var jsonPhotos = getPhotosService.Get($"/photos?albumId={albumId}");
-            var photos = JsonSerializer.Deserialize<List<Photo>>(jsonPhotos, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var photos = getPhotosService.Get($"?albumId={albumId}");
 
             return photos;
         }

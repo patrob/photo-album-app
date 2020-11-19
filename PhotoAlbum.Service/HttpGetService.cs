@@ -1,33 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.Json;
 
 namespace PhotoAlbum.Service
 {
-    public class HttpGetService : IGetService
+    public class HttpGetService<T> : IGetService<T>
     {
         private HttpClient httpClient;
+        private JsonSerializerOptions jsonSerializerOptions;
 
-        public HttpGetService(string baseUrl)
+        public HttpGetService(string baseUrl, JsonSerializerOptions jsonSerializerOptionsParam)
         {
             httpClient = new HttpClient
             {
                 BaseAddress = new Uri(baseUrl)
             };
+            jsonSerializerOptions = jsonSerializerOptionsParam;
         }
 
         public void Dispose() => httpClient.Dispose();
 
-        /// <summary>
-        /// Gets json data from endpoint.
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        public string Get(string url)
+        public List<T> Get(string filterString)
         {
-            var response = httpClient.GetAsync(url).Result;
+            var response = httpClient.GetAsync(filterString).Result;
             response.EnsureSuccessStatusCode();
-            var responseBody = response.Content.ReadAsStringAsync().Result;
-            return responseBody;
+            var responseJson = response.Content.ReadAsStringAsync().Result;
+            var result = JsonSerializer.Deserialize<List<T>>(responseJson, jsonSerializerOptions);
+            return result;
         }
     }
 }

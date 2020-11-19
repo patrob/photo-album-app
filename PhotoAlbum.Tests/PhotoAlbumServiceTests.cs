@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
+using System.Linq;
 using NSubstitute;
 using PhotoAlbum.Service;
 using PhotoAlbum.Service.Models;
@@ -10,7 +10,7 @@ namespace PhotoAlbum.Tests
 {
     public class PhotoAlbumServiceTests
     {
-        IGetService mockGetService;
+        IGetService<Photo> mockGetService;
         List<Photo> testPhotos;
 
         public PhotoAlbumServiceTests()
@@ -25,20 +25,20 @@ namespace PhotoAlbum.Tests
                     Url = "url"
                 }
             };
-            var jsonResult = JsonSerializer.Serialize(testPhotos, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            mockGetService = Substitute.For<IGetService>();
-            mockGetService.Get(Arg.Any<string>()).Returns(jsonResult);
+            mockGetService = Substitute.For<IGetService<Photo>>();
+            mockGetService.Get(Arg.Any<string>()).Returns(testPhotos);
         }
 
         [Fact]
-        public void GetPhotosByAlbumId_ValidId_Returns1Record()
+        public void GetPhotosByAlbumId_ValidId_ReturnsExpectedCount()
         {
             var albumId = 1;
+            var expectedCount = testPhotos.Count;
 
             var testService = new PhotoAlbumService(mockGetService);
             var photos = testService.GetPhotosByAlbumId(albumId);
 
-            Assert.Single(photos);
+            Assert.Equal(expectedCount, photos.Count());
         }
 
         [Fact]

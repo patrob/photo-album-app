@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PhotoAlbum.Service
 {
-    public interface IGetService : IDisposable
+    public interface IGetService<T> : IDisposable
     {
-        string Get(string url);
+        List<T> Get(string filterString);
     }
 }
