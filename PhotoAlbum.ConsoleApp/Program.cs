@@ -25,9 +25,16 @@ namespace PhotoAlbum.ConsoleApp
             using var getPhotosService = new HttpGetService<Photo>("https://jsonplaceholder.typicode.com/photos", jsonSerializerOptions);
             var photoAlbumService = new PhotoAlbumService(getPhotosService);
 
-            var photos = photoAlbumService.GetPhotosByAlbumId(validationResult.Result);
+            var photos = photoAlbumService.GetPhotosByAlbumId(validationResult.Result).ToList();
 
-            photos.ToList().ForEach((photo) => Console.WriteLine(photo));
+            if (photos.Any())
+            {
+                photos.ForEach((photo) => Console.WriteLine(photo));
+            }
+            else
+            {
+                Console.WriteLine($"No photos returned for Album Id {validationResult.Result}.");
+            }
         }
     }
 }
