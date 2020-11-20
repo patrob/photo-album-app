@@ -3,8 +3,8 @@ using PhotoAlbum.Service.Models;
 
 namespace PhotoAlbum.Service
 {
-    public interface IPhotoAlbumService
+    public interface IPhotoService
     {
-        GetPhotosResult GetPhotosByAlbumId(int albumId);
+        List<Photo> GetPhotosByAlbumId(int albumId);
     }
 }

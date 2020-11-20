@@ -1,6 +1,6 @@
 ﻿using PhotoAlbum.Service.Models;
 
-namespace PhotoAlbum.ConsoleApp
+namespace PhotoAlbum.Service
 {
     public interface IValidationService
     {

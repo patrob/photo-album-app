@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text.Json;
 using PhotoAlbum.Service.Models;
 
 namespace PhotoAlbum.Service
 {
     public class PhotoAlbumService : IPhotoAlbumService
     {
-        private IGetService<Photo> getPhotosService;
+        private IPhotoService getPhotosService;
 
-        public PhotoAlbumService(IGetService<Photo> getPhotosServiceParam)
+        public PhotoAlbumService(IPhotoService getPhotosServiceParam)
         {
             getPhotosService = getPhotosServiceParam;
         }
 
-        public IEnumerable<Photo> GetPhotosByAlbumId(int albumId)
+        public GetPhotosResult GetPhotosByAlbumId(int albumId)
         {
             if (albumId < 0)
             {
@@ -23,14 +21,19 @@ namespace PhotoAlbum.Service
 
             try
             {
-                var photos = getPhotosService.Get($"?albumId={albumId}");
+                var photos = getPhotosService.GetPhotosByAlbumId(albumId);
 
-                return photos;
+                return new GetPhotosResult
+                {
+                    Photos = photos
+                };
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
-                throw;
+                return new GetPhotosResult
+                {
+                    ErrorMessage = ex.Message
+                };
             }
         }
     }

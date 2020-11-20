@@ -1,33 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text.Json;
 
 namespace PhotoAlbum.Service
 {
-    public class HttpGetService<T> : IGetService<T>
+    /// <summary>
+    /// Class for wrapping the HttpClient for ease of mocking
+    /// </summary>
+    public class HttpGetService : IGetService
     {
         private HttpClient httpClient;
-        private JsonSerializerOptions jsonSerializerOptions;
 
-        public HttpGetService(string baseUrl, JsonSerializerOptions jsonSerializerOptionsParam)
+        public HttpGetService(string baseUrl)
         {
             httpClient = new HttpClient
             {
                 BaseAddress = new Uri(baseUrl)
             };
-            jsonSerializerOptions = jsonSerializerOptionsParam;
         }
 
         public void Dispose() => httpClient.Dispose();
 
-        public List<T> Get(string filterString)
+        public HttpResponseMessage Get(string filterString)
         {
-            var response = httpClient.GetAsync(filterString).Result;
-            response.EnsureSuccessStatusCode();
-            var responseJson = response.Content.ReadAsStringAsync().Result;
-            var result = JsonSerializer.Deserialize<List<T>>(responseJson, jsonSerializerOptions);
-            return result;
+            return httpClient.GetAsync(filterString).Result;
         }
     }
 }

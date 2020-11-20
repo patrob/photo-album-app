@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using PhotoAlbum.Service.Models;
 
-namespace PhotoAlbum.ConsoleApp
+namespace PhotoAlbum.Service
 {
     public class ValidationService : IValidationService
     {
@@ -11,12 +11,7 @@ namespace PhotoAlbum.ConsoleApp
 
         public ValidationResult GetValidationResult(string[] args)
         {
-            var validationResult = new ValidationResult
-            {
-                Description = "Valid",
-                IsValid = true,
-                HasWarning = false
-            };
+            var validationResult = new ValidationResult();
 
             if (args == null || args.Length == 0)
             {

@@ -10,6 +10,14 @@
 
         public override string ToString()
         {
+            if (Id < 0)
+            {
+                return $"[{Id}] Invalid Id";
+            }
+            else if (string.IsNullOrEmpty(Title))
+            {
+                return $"[{Id}] No Title Provided";
+            }
             return $"[{Id}] {Title}";
         }
     }

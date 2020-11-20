@@ -8,6 +8,9 @@ namespace PhotoAlbum.Tests
         [Fact]
         public void ToString_ValidPhoto_CorrectOutput()
         {
+            const int ID = 1;
+            const string TITLE = "Some title";
+
             var photo = new Photo
             {
                 Id = 1,
@@ -19,12 +22,15 @@ namespace PhotoAlbum.Tests
 
             var result = photo.ToString();
 
-            Assert.Equal("[1] Some title", result);
+            Assert.Equal($"[{ID}] {TITLE}", result);
         }
 
         [Fact]
-        public void ToString_NullTitle_CorrectOutput()
+        public void ToString_NullTitle_ReturnIdAndMessageReplacingNullTitle()
         {
+            const int ID = 1;
+            const string TITLE = "No Title Provided";
+
             var photo = new Photo
             {
                 Id = 1,
@@ -36,12 +42,15 @@ namespace PhotoAlbum.Tests
 
             var result = photo.ToString();
 
-            Assert.Equal("[1] ", result);
+            Assert.Equal($"[{ID}] {TITLE}", result);
         }
 
         [Fact]
-        public void ToString_NegativeId_CorrectOutput()
+        public void ToString_NegativeId_ReturnMessageNotifyingOfNegativeId()
         {
+            const int ID = -1;
+            const string TITLE = "Invalid Id";
+
             var photo = new Photo
             {
                 Id = -1,
@@ -53,7 +62,7 @@ namespace PhotoAlbum.Tests
 
             var result = photo.ToString();
 
-            Assert.Equal("[-1] title", result);
+            Assert.Equal($"[{ID}] {TITLE}", result);
         }
     }
 }

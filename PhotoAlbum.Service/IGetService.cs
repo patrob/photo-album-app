@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Net.Http;
 
 namespace PhotoAlbum.Service
 {
-    public interface IGetService<T> : IDisposable
+    public interface IGetService : IDisposable
     {
-        List<T> Get(string filterString);
+        HttpResponseMessage Get(string filterString);
     }
 }
