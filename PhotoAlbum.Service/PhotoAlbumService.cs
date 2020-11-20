@@ -21,9 +21,17 @@ namespace PhotoAlbum.Service
                 throw new ArgumentException("Invalid Album Id.", nameof(albumId));
             }
 
-            var photos = getPhotosService.Get($"?albumId={albumId}");
+            try
+            {
+                var photos = getPhotosService.Get($"?albumId={albumId}");
 
-            return photos;
+                return photos;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
         }
     }
 }

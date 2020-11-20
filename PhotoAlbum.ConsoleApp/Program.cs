@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 using PhotoAlbum.Service;
 using PhotoAlbum.Service.Models;
 
@@ -20,9 +21,14 @@ namespace PhotoAlbum.ConsoleApp
                 return;
             }
 
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
+
+            Console.WriteLine($"Url: {configuration["PhotosUrl"]}");
 
             var jsonSerializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            using var getPhotosService = new HttpGetService<Photo>("https://jsonplaceholder.typicode.com/photos", jsonSerializerOptions);
+            using var getPhotosService = new HttpGetService<Photo>(configuration["PhotosUrl"], jsonSerializerOptions);
             var photoAlbumService = new PhotoAlbumService(getPhotosService);
 
             var photos = photoAlbumService.GetPhotosByAlbumId(validationResult.Result).ToList();
