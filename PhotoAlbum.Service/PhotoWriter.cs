@@ -14,11 +14,15 @@ namespace PhotoAlbum.Service
             output = textWriter;
         }
 
-        public void WritePhotos(List<Photo> photos)
+        public void WritePhotos(GetPhotosResult photosResult)
         {
-            if (photos.Any())
+            if (photosResult.Photos.Any())
             {
-                photos.ForEach((photo) => output.WriteLine($"{photo}"));
+                photosResult.Photos.ForEach((photo) => output.WriteLine($"{photo}"));
+            }
+            else if (!string.IsNullOrEmpty(photosResult.ErrorMessage))
+            {
+                output.WriteLine($"Failed to retrieve photos. {photosResult.ErrorMessage}");
             }
             else
             {

@@ -30,7 +30,7 @@ namespace PhotoAlbum.Service
 
             var photoWriter = new PhotoWriter(output);
 
-            photoWriter.WritePhotos(photoResult.Photos);
+            photoWriter.WritePhotos(photoResult);
         }
     }
 }
